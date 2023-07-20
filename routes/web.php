@@ -25,9 +25,9 @@ Route::post('/contact/send','BlogController@contackSend');
 
 
 Auth::routes();
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-// admin 
+
+
 
 
 Route::group(['middleware'=>['auth']],function () {
@@ -36,6 +36,7 @@ Route::group(['middleware'=>['auth']],function () {
     Route::post('/checkout','BlogController@checkout');
     Route::get('/logout',[App\Http\Controllers\Auth\LoginController::class,'logout']);
 });
+
 Route::group(['middleware'=>['adminOrNot']],function () {
     Route::get('/product/create','ProductController@create')->name('new-product');
     Route::get('/product/list','ProductController@list')->name('product_list');
@@ -44,6 +45,7 @@ Route::group(['middleware'=>['adminOrNot']],function () {
     Route::post('product/update/{id}','ProductController@productUpdate');
     
 });
+
 Route::group(['middleware'=>['superAdmin']],function () {
     Route::get('/product/delete/{id}','ProductController@delete');
     Route::get('/admin/list',"UserController@adminList");
@@ -54,18 +56,18 @@ Route::group(['middleware'=>['superAdmin']],function () {
     Route::post('/admin/update/{id}',"UserController@adminUpdate");
 });
 
-Route::get('/test',function() {
+// Route::get('/test',function() {
 
 
-    $user = DB::table('users')
-    ->join('products','products.user_id','=','users.id')
-    ->select('products.*','users.name')
-    ->get();
+//     $user = DB::table('users')
+//     ->join('products','products.user_id','=','users.id')
+//     ->select('products.*','users.name')
+//     ->get();
   
-         $badges = DB::table('users')
-        ->join('carts','carts.user_id','=','users.id')
-        ->where('users.id','=',auth::user()->id)
-        ->get()
-        ->count();
-        dd($badges);
-});
+//          $badges = DB::table('users')
+//         ->join('carts','carts.user_id','=','users.id')
+//         ->where('users.id','=',auth::user()->id)
+//         ->get()
+//         ->count();
+//         dd($badges);
+// });
