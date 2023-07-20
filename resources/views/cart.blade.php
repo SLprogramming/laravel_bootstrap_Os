@@ -24,7 +24,7 @@
                 </div>
                 <div class="col-md-6 d-flex justify-content-around">
                   <h6>price:{{$cart->price*$cart->Qty}} Ks</h6>
-                  <i class="fa-solid fa-trash-can"></i>
+                  <a href="{{url('/cart/product/delete/'.$cart->cart_id)}}" class="fa-solid fa-trash-can"></a>
                 </div>
               </div>
             </div>

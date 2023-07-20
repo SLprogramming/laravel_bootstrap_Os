@@ -26,12 +26,10 @@ Route::post('/contact/send','BlogController@contackSend');
 
 Auth::routes();
 
-
-
-
-
 Route::group(['middleware'=>['auth']],function () {
+
     Route::get('/cart','BlogController@cart');
+    Route::get('/cart/product/delete/{id}','BlogController@cartDelete');
     Route::post('/cart/add','BlogController@cartAdd');
     Route::post('/checkout','BlogController@checkout');
     Route::get('/logout',[App\Http\Controllers\Auth\LoginController::class,'logout']);

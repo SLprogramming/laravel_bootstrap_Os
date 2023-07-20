@@ -46,11 +46,15 @@ class BlogController extends Controller
     public function cart() {
         $carts = DB::table('carts')
         ->join('products','products.id','=','carts.product_id')
-        ->select('products.*','carts.Qty')
+        ->select('products.*','carts.Qty','carts.id as cart_id')
         ->where('carts.user_id','=',auth()->user()->id)
         ->get();
         $badges=$this->getBadges();
         return view('cart',compact('carts','badges'));
+    }
+    public function cartDelete($id) {
+        Cart::findOrFail($id)->delete();
+        return back();
     }
     public function checkout(Request $request) {
         $check=[];
