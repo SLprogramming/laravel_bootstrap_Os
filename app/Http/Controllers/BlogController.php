@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Product;
@@ -12,50 +13,34 @@ use Auth;
 
 class BlogController extends Controller
 {
+    private function getBadges() {
+        if(auth::check()) {
+            $badge = DB::table('users')
+            ->join('carts','carts.user_id','=','users.id')
+            ->where('users.id','=',auth::user()->id)
+            ->get()
+            ->count();
+            $badges = [$badge];
+        }else{
+            $badges = [0];
+        }
+        return $badges;
+    }
     
     public function home() {
         $products = Product::all();
-       
-        if(auth::check()) {
-            $badge = DB::table('users')
-            ->join('carts','carts.user_id','=','users.id')
-            ->where('users.id','=',auth::user()->id)
-            ->get()
-            ->count();
-            $badges = [$badge];
-        }else{
-            $badges = [0];
-        }
-       
-        
+        $badges=$this->getBadges();
         return view('index',compact('badges','products'));
     }
+
     public function detail($id) {
         $product = Product::find($id);
         $products = Product::all();
-        if(auth::check()) {
-            $badge = DB::table('users')
-            ->join('carts','carts.user_id','=','users.id')
-            ->where('users.id','=',auth::user()->id)
-            ->get()
-            ->count();
-            $badges = [$badge];
-        }else{
-            $badges = [0];
-        }
+        $badges=$this->getBadges();
         return view('detail',compact('badges','product','products'));
     }
     public function contact() {
-        if(auth::check()) {
-            $badge = DB::table('users')
-            ->join('carts','carts.user_id','=','users.id')
-            ->where('users.id','=',auth::user()->id)
-            ->get()
-            ->count();
-            $badges = [$badge];
-        }else{
-            $badges = [0];
-        }
+        $badges=$this->getBadges();
         return view('contact',compact('badges'));
     }
     public function cart() {
@@ -64,16 +49,7 @@ class BlogController extends Controller
         ->select('products.*','carts.Qty')
         ->where('carts.user_id','=',auth()->user()->id)
         ->get();
-        if(auth::check()) {
-            $badge = DB::table('users')
-            ->join('carts','carts.user_id','=','users.id')
-            ->where('users.id','=',auth::user()->id)
-            ->get()
-            ->count();
-            $badges = [$badge];
-        }else{
-            $badges = [0];
-        }
+        $badges=$this->getBadges();
         return view('cart',compact('carts','badges'));
     }
     public function checkout(Request $request) {

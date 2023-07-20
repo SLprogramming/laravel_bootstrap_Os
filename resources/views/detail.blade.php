@@ -18,15 +18,7 @@
           <p>
             <span class="text-decoration-line-through">20,000 ks</span> - {{$product->discount}} %
           </p>
-          <!-- <select
-            class="form-select"
-            aria-label=".form-select-sm example"
-            id=""
-          >
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-          </select> -->
+        
           <form action="{{url('/cart/add')}}" method="post">
             @csrf
             <input type="number" name="Qty" min="1" value="1" max="{{$product->Qty}}">
